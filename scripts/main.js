@@ -1,14 +1,14 @@
 console.log('main.js executing');
 
+// Initialize title variables (what we will use to determine if we have seen this exit before)
 var title = "";
 var titleLast = "";
 var titleList = [];
 
 function checkForExitPage() {
-    // ... some potentially long-running code here ...
 
-    var areaChildNode = 1;
-    var latLongChildNode = 2;
+    var areaChildNode = 0;
+    var latLongChildNode = 1;
 
     // We will store the child node indices for the following info, since they can be in different positions on different exit pages:
     var hikingTimeChildNode = 0;
@@ -44,6 +44,7 @@ function checkForExitPage() {
         // console.log("Exit Name: " + title);
 
         // Check if this is the second time seeing the same title, which likely means that the data is fully loaded
+        // Check if the title is not in the list already
         if (title === titleLast && !titleList.includes(title)) {
           console.log("Title is the same as last time, likely fully loaded. Sending data to server...");
 
