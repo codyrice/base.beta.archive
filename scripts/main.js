@@ -45,7 +45,7 @@ function checkForExitPage() {
 
         // Check if this is the second time seeing the same title, which likely means that the data is fully loaded
         // Check if the title is not in the list already
-        if (title === titleLast && !titleList.includes(title)) {
+        if (title === titleLast) {
           console.log("Title is the same as last time, likely fully loaded. Sending data to server...");
 
           // We will iterate through the info section and grab all the relevant info
@@ -55,146 +55,150 @@ function checkForExitPage() {
           var area = infoSection.childNodes[areaChildNode].textContent;
           // console.log("Area: " + area);
 
-          // LatLong
-          var latLong = content.childNodes[1].childNodes[latLongChildNode].textContent;
-          // console.log("LatLong: " + latLong);
+          if (!titleList.includes(title+area)) {
+            // If we haven't seen this title and area combination before, we will grab the rest of the info and send it to the server
+            // LatLong
+            var latLong = content.childNodes[1].childNodes[latLongChildNode].textContent;
+            // console.log("LatLong: " + latLong);
 
-          // We will iterate through the info section and find the child nodes for the following info, since they can be in different positions on different exit pages:
-          for (var i = 3; i < infoSection.childNodes.length; i++) {
-            var child = infoSection.childNodes[i];
-            if (child && child.textContent && child.textContent.trim() !== "") {
-              var childText = child.textContent.toLowerCase().trim();
-              switch (childText) {
-                
-                // Hiking Time
-                case "hiking time":
-                  hikingTimeChildNode = i + 1;
-                case "height msl":
-                  heightMSLChildNode = i + 1;
-                case "flyable altitude":
-                  flyableAltitudeChildNode = i + 1;
-                case "exit direction":
-                  exitDirectionChildNode = i + 1;
-                case "verticality":
-                  verticalityChildNode = i + 1;
-                case "jump type":
-                  jumpTypeChildNode = i + 1;
-                case "1. history":
-                  objectHistoryChildNode = i + 1;
-                case "2. access":
-                  accessChildNode = i + 1;
-                case "3. approach":
-                  approachChildNode = i + 1;
-                case "4. ledge and gear-up area":
-                  ledgeAndGearUpAreaChildNode = i + 1;
-                case "5. gear":
-                  gearChildNode = i + 1;
-                case "6. height/terrain profile":
-                  heightAndTerrainProfileChildNode = i + 1;
-                case "7. landing":
-                  landingChildNode = i + 1;
-                case "8. return":
-                  returnChildNode = i + 1;
-                case "9. observations":
-                  observationsChildNode = i + 1;
+            // We will iterate through the info section and find the child nodes for the following info, since they can be in different positions on different exit pages:
+            for (var i = 3; i < infoSection.childNodes.length; i++) {
+              var child = infoSection.childNodes[i];
+              if (child && child.textContent && child.textContent.trim() !== "") {
+                var childText = child.textContent.toLowerCase().trim();
+                switch (childText) {
+                  
+                  // Hiking Time
+                  case "hiking time":
+                    hikingTimeChildNode = i + 1;
+                  case "height msl":
+                    heightMSLChildNode = i + 1;
+                  case "flyable altitude":
+                    flyableAltitudeChildNode = i + 1;
+                  case "exit direction":
+                    exitDirectionChildNode = i + 1;
+                  case "verticality":
+                    verticalityChildNode = i + 1;
+                  case "jump type":
+                    jumpTypeChildNode = i + 1;
+                  case "1. history":
+                    objectHistoryChildNode = i + 1;
+                  case "2. access":
+                    accessChildNode = i + 1;
+                  case "3. approach":
+                    approachChildNode = i + 1;
+                  case "4. ledge and gear-up area":
+                    ledgeAndGearUpAreaChildNode = i + 1;
+                  case "5. gear":
+                    gearChildNode = i + 1;
+                  case "6. height/terrain profile":
+                    heightAndTerrainProfileChildNode = i + 1;
+                  case "7. landing":
+                    landingChildNode = i + 1;
+                  case "8. return":
+                    returnChildNode = i + 1;
+                  case "9. observations":
+                    observationsChildNode = i + 1;
+              }
             }
           }
-        }
 
-          // Hiking Time
-          var hikingTime = content.childNodes[1].childNodes[hikingTimeChildNode].textContent;
-          // console.log("Hiking Time: " + hikingTime);
+            // Hiking Time
+            var hikingTime = content.childNodes[1].childNodes[hikingTimeChildNode].textContent;
+            // console.log("Hiking Time: " + hikingTime);
 
-          // Height MSL
-          var heightMSL = content.childNodes[1].childNodes[heightMSLChildNode].textContent;
-          // console.log("Height MSL: " + heightMSL);
+            // Height MSL
+            var heightMSL = content.childNodes[1].childNodes[heightMSLChildNode].textContent;
+            // console.log("Height MSL: " + heightMSL);
 
-          // Flyable Altitude
-          var flyableAltitude = content.childNodes[1].childNodes[flyableAltitudeChildNode].textContent;
-          // console.log("Flyable Altitude: " + flyableAltitude);
+            // Flyable Altitude
+            var flyableAltitude = content.childNodes[1].childNodes[flyableAltitudeChildNode].textContent;
+            // console.log("Flyable Altitude: " + flyableAltitude);
 
-          // Exit Direction
-          var exitDirection = content.childNodes[1].childNodes[exitDirectionChildNode].textContent;
-          // console.log("Exit Direction: " + exitDirection);
+            // Exit Direction
+            var exitDirection = content.childNodes[1].childNodes[exitDirectionChildNode].textContent;
+            // console.log("Exit Direction: " + exitDirection);
 
-          // Verticality
-          var verticality = content.childNodes[1].childNodes[verticalityChildNode].textContent;
-          // console.log("Verticality: " + verticality); 
+            // Verticality
+            var verticality = content.childNodes[1].childNodes[verticalityChildNode].textContent;
+            // console.log("Verticality: " + verticality); 
 
-          //Jump Type
-          var jumpType = content.childNodes[1].childNodes[jumpTypeChildNode].textContent;
-          // console.log("Jump Type: " + jumpType);
-    
-          // ObjectHistory
-          var objectHistory = content.childNodes[1].childNodes[objectHistoryChildNode].childNodes[0].textContent;
-          // console.log("Object History: " + objectHistory);
+            //Jump Type
+            var jumpType = content.childNodes[1].childNodes[jumpTypeChildNode].textContent;
+            // console.log("Jump Type: " + jumpType);
+      
+            // ObjectHistory
+            var objectHistory = content.childNodes[1].childNodes[objectHistoryChildNode].childNodes[0].textContent;
+            // console.log("Object History: " + objectHistory);
 
-          // Access
-          var access = content.childNodes[1].childNodes[accessChildNode].childNodes[0].textContent;
-          // console.log("Access: " + access);
+            // Access
+            var access = content.childNodes[1].childNodes[accessChildNode].childNodes[0].textContent;
+            // console.log("Access: " + access);
 
-          // Approach
-          var approach = content.childNodes[1].childNodes[approachChildNode].childNodes[0].textContent;
-          // console.log("Approach: " + approach);
+            // Approach
+            var approach = content.childNodes[1].childNodes[approachChildNode].childNodes[0].textContent;
+            // console.log("Approach: " + approach);
 
-          // Ledge and Gear Up Area
-          var ledgeAndGearUpArea = content.childNodes[1].childNodes[ledgeAndGearUpAreaChildNode].childNodes[0].textContent;
-          // console.log("Ledge and Gear Up Area: " + ledgeAndGearUpArea);
+            // Ledge and Gear Up Area
+            var ledgeAndGearUpArea = content.childNodes[1].childNodes[ledgeAndGearUpAreaChildNode].childNodes[0].textContent;
+            // console.log("Ledge and Gear Up Area: " + ledgeAndGearUpArea);
 
-          // Gear
-          var gear = content.childNodes[1].childNodes[gearChildNode].childNodes[0].textContent;
-          // console.log("Gear: " + gear);
+            // Gear
+            var gear = content.childNodes[1].childNodes[gearChildNode].childNodes[0].textContent;
+            // console.log("Gear: " + gear);
 
-          // Height and Terrain Profile
-          var heightAndTerrainProfile = content.childNodes[1].childNodes[heightAndTerrainProfileChildNode].childNodes[0].innerText;
-          if (heightAndTerrainProfile.includes("\n")) {
-            heightAndTerrainProfile = heightAndTerrainProfile.split("\n");
+            // Height and Terrain Profile
+            var heightAndTerrainProfile = content.childNodes[1].childNodes[heightAndTerrainProfileChildNode].childNodes[0].innerText;
+            if (heightAndTerrainProfile.includes("\n")) {
+              heightAndTerrainProfile = heightAndTerrainProfile.split("\n");
+            }
+            // console.log("Height and Terrain Profile: " + heightAndTerrainProfile);
+
+            // Landing
+            var landing = content.childNodes[1].childNodes[landingChildNode].childNodes[0].textContent;
+            // console.log("Landing: " + landing);
+
+            // Return
+            var returnInfo = content.childNodes[1].childNodes[returnChildNode].childNodes[0].textContent;
+            // console.log("Return: " + returnInfo);
+
+            // Observations
+            var observations = content.childNodes[1].childNodes[observationsChildNode].childNodes[0].textContent;
+            // console.log("Observations: " + observations); 
+
+            const exitInfoJSON = {
+              title: title,
+              area: area,
+              latLong: latLong,
+              hikingTime: hikingTime,
+              heightMSL: heightMSL,
+              flyableAltitude: flyableAltitude,
+              exitDirection: exitDirection,
+              verticality: verticality,
+              jumpType: jumpType,
+              objectHistory: objectHistory,
+              access: access,
+              approach: approach,
+              ledgeAndGearUpArea: ledgeAndGearUpArea,
+              gear: gear,
+              heightAndTerrainProfile: heightAndTerrainProfile,
+              landing: landing,
+              returnInfo: returnInfo,
+              observations: observations
+            };
+
+            console.log("Exit Info JSON:", JSON.stringify(exitInfoJSON));
+
+            // Send the data to the spreadsheet
+            fetch("https://script.google.com/macros/s/AKfycbwDupYgXR0ZdrcMiRoHiK10U0aVGsTGYaY4QTY9JhZYfuQWiR1VYu1nLhjMsXalQDZV/exec", {
+            method: "POST",
+            body: JSON.stringify(exitInfoJSON)
+            });
+
+            // Store the title in the list so we don't repeat it
+            titleList.push(title+area);
           }
-          // console.log("Height and Terrain Profile: " + heightAndTerrainProfile);
 
-          // Landing
-          var landing = content.childNodes[1].childNodes[landingChildNode].childNodes[0].textContent;
-          // console.log("Landing: " + landing);
-
-          // Return
-          var returnInfo = content.childNodes[1].childNodes[returnChildNode].childNodes[0].textContent;
-          // console.log("Return: " + returnInfo);
-
-          // Observations
-          var observations = content.childNodes[1].childNodes[observationsChildNode].childNodes[0].textContent;
-          // console.log("Observations: " + observations); 
-
-          const exitInfoJSON = {
-            title: title,
-            area: area,
-            latLong: latLong,
-            hikingTime: hikingTime,
-            heightMSL: heightMSL,
-            flyableAltitude: flyableAltitude,
-            exitDirection: exitDirection,
-            verticality: verticality,
-            jumpType: jumpType,
-            objectHistory: objectHistory,
-            access: access,
-            approach: approach,
-            ledgeAndGearUpArea: ledgeAndGearUpArea,
-            gear: gear,
-            heightAndTerrainProfile: heightAndTerrainProfile,
-            landing: landing,
-            returnInfo: returnInfo,
-            observations: observations
-          };
-
-          console.log("Exit Info JSON:", JSON.stringify(exitInfoJSON));
-
-          // Send the data to the spreadsheet
-          fetch("https://script.google.com/macros/s/AKfycbwDupYgXR0ZdrcMiRoHiK10U0aVGsTGYaY4QTY9JhZYfuQWiR1VYu1nLhjMsXalQDZV/exec", {
-          method: "POST",
-          body: JSON.stringify(exitInfoJSON)
-          });
-
-          // Store the title in the list so we don't repeat it
-          titleList.push(title);
         }
 
         titleLast = title;
